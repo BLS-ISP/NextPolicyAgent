@@ -78,4 +78,4 @@ can_view_clearance if {
 
 # ── Summary ──────────────────────────────────────────────
 # Note: count() expressions are inlined since rule refs can't be used as sprintf args
-summary := sprintf("Abteilung '%s': %s aktive Mitarbeiter gefunden", [input.department, count([emp | some emp in data.employees; emp.department == input.department; emp.active == true])])
+summary := sprintf("Abteilung '%s': %d aktive Mitarbeiter gefunden", [input.department, count([emp | some emp in data.employees; emp.department == input.department; emp.active == true])])
