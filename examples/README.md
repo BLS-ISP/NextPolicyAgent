@@ -212,3 +212,20 @@ npa eval -d examples/data-filtering/ \
 - Verwende `else`-Ketten für bedingte Werte statt `not`
 - Inline komplexe Bedingungen direkt in die Regel statt auf andere Regeln zu verweisen
 - Verwende `%s` statt `%v` in `sprintf()`-Aufrufen
+
+---
+
+## Plugin-Beispiele
+
+Neben den Policy-Beispielen enthält das Verzeichnis [`plugins/`](plugins/) 5 Beispiele
+für das NPA-Plugin-System:
+
+| Beispiel | Beschreibung |
+|----------|-------------|
+| Audit Trail | Lokales JSONL Audit-Logging mit Rotation |
+| Rate Limit | Sliding-Window Rate-Limiting pro Client |
+| Webhook Notification | Alerts per Slack, Teams oder Generic JSON |
+| Metrics | Prometheus-kompatible Metriken-Sammlung |
+| Built-in Config | Konfiguration der 4 mitgelieferten Plugins |
+
+Details: [plugins/README.md](plugins/README.md)

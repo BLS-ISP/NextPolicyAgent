@@ -3,7 +3,7 @@
 **High-performance, secure policy engine — Python/FastAPI rewrite of Open Policy Agent (OPA)**
 
 [![Python](https://img.shields.io/badge/Python-≥3.12-blue)](https://python.org)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
+[![License](https://img.shields.io/badge/License-GPL--3.0-blue)](LICENSE)
 [![OPA Compatible](https://img.shields.io/badge/OPA-kompatibel-orange)](https://www.openpolicyagent.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-blue)](Documentation/Docker-Anleitung.md)
 
@@ -200,6 +200,29 @@ Detaillierte Beschreibung: [examples/README.md](examples/README.md)
 
 ---
 
+## Plugin-Beispiele
+
+5 Beispiele unter [`examples/plugins/`](examples/plugins/) demonstrieren das NPA-Plugin-System:
+
+| Beispiel | Beschreibung |
+|----------|--------------|
+| `audit_trail_plugin.py` | Lokales JSONL Audit-Logging mit Rotation |
+| `rate_limit_plugin.py` | Sliding-Window Rate-Limiting pro Client |
+| `webhook_notification_plugin.py` | Webhook-Alerts (Slack, Teams, Generic JSON) |
+| `metrics_plugin.py` | Prometheus-kompatible Metriken-Sammlung |
+| `builtin_config_plugin.py` | Konfiguration der 4 Built-in Plugins + YAML-Template |
+
+```bash
+# Plugin-Beispiel ausführen
+python -m examples.plugins.audit_trail_plugin
+python -m examples.plugins.rate_limit_plugin
+python -m examples.plugins.metrics_plugin
+```
+
+Detaillierte Beschreibung: [examples/plugins/README.md](examples/plugins/README.md)
+
+---
+
 ## Architektur
 
 ```
@@ -254,7 +277,7 @@ NextPolicyAgent/
 ├── pyproject.toml                # Python-Projektdefinition
 ├── start-npa.ps1 / .sh          # Start-Skripte (Windows/Linux)
 ├── stop-npa.ps1                  # Stop-Skript (Windows)
-├── examples/                     # 6 Policy-Beispiele (OPA-verifiziert)
+├── examples/                     # 6 Policy-Beispiele + 5 Plugin-Beispiele
 ├── Documentation/                # Anleitungen
 │   └── Docker-Anleitung.md      # Vollständige Docker-Anleitung
 └── npa/                          # Quellcode
@@ -330,6 +353,8 @@ result = engine.decide("data.authz", {"role": "admin"})
 |----------|-------------|
 | [Docker-Anleitung](Documentation/Docker-Anleitung.md) | Container-Setup, Konfiguration, Produktion |
 | [Policy-Beispiele](examples/README.md) | 6 praxisnahe Rego-Policies mit Erklärung |
+| [Plugin-Beispiele](examples/plugins/README.md) | 5 Plugin-Beispiele mit Architektur-Übersicht |
+| [Performance-Vergleich](Documentation/Performance_Vergleich_OPA_vs_NPA.md) | Benchmark OPA vs. NPA (8 Tests) |
 | [OPA Gap-Analyse](Documentation/OPA_vs_NPA_Gap_Analysis.md) | Kompatibilitätsvergleich NPA vs. OPA |
 | [Anforderungsprofil](Documentation/OPA_Analyse_und_Anforderungsprofil.md) | Ursprüngliche Analyse und Designziele |
 
@@ -337,5 +362,6 @@ result = engine.decide("data.authz", {"role": "admin"})
 
 ## Lizenz
 
-Apache License 2.0 — siehe [LICENSE](LICENSE) (falls vorhanden)
+Dieses Projekt steht unter der **GNU General Public License v3.0** (GPL-3.0).  
+Siehe [LICENSE](LICENSE) für den vollständigen Lizenztext.
 

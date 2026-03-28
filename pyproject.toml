@@ -7,7 +7,7 @@ name = "npa"
 version = "0.1.0"
 description = "Next Policy Agent — A high-performance, secure policy engine (Python/FastAPI rewrite of OPA)"
 readme = "README.md"
-license = {text = "Apache-2.0"}
+license = {text = "GPL-3.0-only"}
 requires-python = ">=3.12"
 authors = [
     {name = "NPA Team"},
@@ -17,7 +17,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: FastAPI",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python :: 3.12",
     "Topic :: Security",
     "Topic :: Software Development :: Libraries",
