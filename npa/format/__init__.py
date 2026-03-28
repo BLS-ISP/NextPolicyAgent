@@ -1,0 +1,1 @@
+"""Rego formatter module."""
