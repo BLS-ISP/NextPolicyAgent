@@ -2,36 +2,203 @@
 
 **High-performance, secure policy engine — Python/FastAPI rewrite of Open Policy Agent (OPA)**
 
+[![Python](https://img.shields.io/badge/Python-≥3.12-blue)](https://python.org)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
+[![OPA Compatible](https://img.shields.io/badge/OPA-kompatibel-orange)](https://www.openpolicyagent.org/)
+[![Docker](https://img.shields.io/badge/Docker-ready-blue)](Documentation/Docker-Anleitung.md)
+
+---
+
 ## Features
 
-- **Rego-kompatible Policy-Sprache** mit optimiertem Parser und Evaluator
-- **HTTPS by Default** — TLS 1.2+ als Standard, nicht optional
+- **Rego-kompatible Policy-Sprache** — optimierter Parser und Evaluator, Rego v1 Syntax
+- **HTTPS by Default** — TLS 1.2+ als Standard, automatische Zertifikatsgenerierung
+- **OPA-kompatible REST-API** — Drop-in-Replacement für `/v1/data`, `/v1/policies`, `/v1/query`
+- **Docker-Ready** — Fedora 41 basiertes Container-Image (~300 MB)
+- **Web-Dashboard** — integrierte Verwaltungsoberfläche mit Live-Metriken
 - **Async-First Architecture** — FastAPI + uvicorn für maximale Performance
 - **Multi-Layer Caching** — BaseCache, InterQueryCache, PreparedQueryCache
 - **Modulares Plugin-System** — Bundles, Decision Logs, Status, Discovery
-- **Dual Storage** — In-Memory (Default) + SQLite (Persistenz, statt BadgerDB)
+- **Dual Storage** — In-Memory (Default) + SQLite (Persistenz)
 - **Bundle-System** — Signierung (JWT), Delta-Updates, OCI-Registry
 - **Vollständige Observability** — OpenTelemetry, Prometheus, Structured Logging
 - **Modern CLI** — Typer-basiert mit Rich-Output
+- **Embeddable SDK** — NPA als Library in Python-Anwendungen einbetten
+
+---
 
 ## Schnellstart
+
+### Lokal (Python)
 
 ```bash
 # Installation
 pip install -e ".[dev]"
 
-# Server starten (HTTPS)
-npa run --addr :8443 --tls-cert cert.pem --tls-key key.pem
+# Server starten (HTTPS mit Auto-TLS)
+npa run
 
-# Policy evaluieren
+# Mit eigenem Zertifikat
+npa run --addr 0.0.0.0:8443 --tls-cert-file cert.pem --tls-private-key-file key.pem
+
+# Ohne TLS (nur Entwicklung)
+npa run --no-tls
+```
+
+### Docker
+
+```bash
+# Image bauen und starten
+docker build -t npa:latest .
+docker run -d -p 8443:8443 --name npa npa:latest
+
+# Oder mit Docker Compose
+docker compose up -d
+```
+
+### Policy evaluieren
+
+```bash
+# Über CLI
 npa eval "data.authz.allow" --input input.json --data policy.rego
 
-# Tests ausführen
-npa test ./policies/
-
-# Code formatieren
-npa fmt ./policies/
+# Über REST-API
+curl -sk -X POST https://localhost:8443/v1/data/authz/allow \
+  -H "Content-Type: application/json" \
+  -d '{"input": {"role": "admin"}}'
 ```
+
+### Weitere CLI-Befehle
+
+```bash
+npa test ./policies/     # Tests ausführen
+npa fmt ./policies/      # Code formatieren
+npa check policy.rego    # Syntax prüfen
+npa parse policy.rego    # AST anzeigen
+npa build -b bundle/     # Bundle erstellen
+npa sign bundle.tar.gz   # Bundle signieren
+npa version              # Version anzeigen
+```
+
+---
+
+## Docker
+
+NPA läuft als Docker-Container auf Basis von **Fedora 41** (~300 MB Image).
+
+```bash
+# Schnellstart
+docker build -t npa:latest .
+docker run -d -p 8443:8443 npa:latest
+
+# Mit Policies und Daten
+docker run -d -p 8443:8443 \
+  -v ./policies:/policies:ro \
+  -v ./data:/data:ro \
+  npa:latest
+
+# Health-Check
+curl -sk https://localhost:8443/health
+```
+
+**Vollständige Anleitung:** [Documentation/Docker-Anleitung.md](Documentation/Docker-Anleitung.md)
+
+### Docker Compose
+
+```bash
+docker compose up -d          # Starten
+docker compose up -d --build  # Neu bauen + starten
+docker compose logs -f npa    # Logs verfolgen
+docker compose down           # Stoppen
+```
+
+---
+
+## REST-API (OPA-kompatibel)
+
+NPA implementiert die OPA REST-API für direkten Austausch:
+
+| Endpoint | Methode | Beschreibung |
+|----------|---------|-------------|
+| `/v1/data/{path}` | GET, POST | Daten abfragen / Policy evaluieren |
+| `/v1/data/{path}` | PUT, PATCH, DELETE | Daten verwalten |
+| `/v1/policies/{id}` | GET, PUT, DELETE | Policies verwalten |
+| `/v1/policies` | GET | Alle Policies auflisten |
+| `/v1/query` | POST | Ad-hoc Rego-Query ausführen |
+| `/v1/compile` | POST | Partial Evaluation |
+| `/health` | GET | Health-Check |
+| `/` | GET | Web-Dashboard |
+
+### Beispiele
+
+```bash
+# Policy hochladen
+curl -sk -X PUT https://localhost:8443/v1/policies/authz \
+  -H "Content-Type: text/plain" \
+  -d 'package authz
+default allow = false
+allow if { input.role == "admin" }'
+
+# Policy evaluieren
+curl -sk -X POST https://localhost:8443/v1/data/authz/allow \
+  -H "Content-Type: application/json" \
+  -d '{"input": {"role": "admin"}}'
+# → {"result": true}
+
+# Daten setzen
+curl -sk -X PUT https://localhost:8443/v1/data/users \
+  -H "Content-Type: application/json" \
+  -d '{"admins": ["alice", "bob"]}'
+
+# Alle Policies auflisten
+curl -sk https://localhost:8443/v1/policies
+```
+
+---
+
+## Konfiguration
+
+Alle Einstellungen über **Umgebungsvariablen** (Prefix `NPA_`), **Config-Datei** (YAML/JSON) oder **CLI-Flags**.
+
+| Bereich | Variablen | Beschreibung |
+|---------|-----------|-------------|
+| Server | `NPA_SERVER_ADDR`, `NPA_SERVER_PORT` | Bind-Adresse/Port (Default: `0.0.0.0:8443`) |
+| TLS | `NPA_TLS_ENABLED`, `NPA_TLS_CERT_FILE`, `NPA_TLS_KEY_FILE` | HTTPS-Konfiguration |
+| Auth | `NPA_AUTH_ENABLED`, `NPA_AUTH_JWT_SECRET`, `NPA_AUTH_UI_PASSWORD` | Authentifizierung |
+| Logging | `NPA_LOGGING_LEVEL`, `NPA_LOG_FORMAT` | Log-Level und Format |
+| Storage | `NPA_STORAGE_BACKEND`, `NPA_STORAGE_DISK_PATH` | Backend-Auswahl |
+
+Vollständige Referenz: [Documentation/Docker-Anleitung.md – Konfiguration](Documentation/Docker-Anleitung.md#konfiguration)
+
+---
+
+## Policy-Beispiele
+
+6 praxisnahe, OPA-verifizierte Rego-Policies unter [`examples/`](examples/):
+
+| Beispiel | Package | Beschreibung |
+|----------|---------|-------------|
+| `rbac/` | `rbac.authz` | Rollenbasierte Zugriffskontrolle |
+| `http-api-authz/` | `httpapi.authz` | REST-API Endpunktschutz |
+| `kubernetes-admission/` | `kubernetes.admission` | K8s Pod-Validierung |
+| `network-firewall/` | `network.firewall` | IP/Port Firewall-Regeln |
+| `jwt-validation/` | `jwt.validation` | JWT Token-Prüfung |
+| `data-filtering/` | `filtering` | Daten-Filterung & Aggregation |
+
+Alle Beispiele sind mit `opa check` validiert und liefern identische Ergebnisse in NPA und OPA.
+
+```bash
+# Beispiel lokal
+npa eval -d examples/rbac/ -i examples/rbac/input.json "data.rbac.authz"
+
+# Beispiel im Docker-Container
+docker exec -it npa python3 -m npa eval \
+  -d /examples/rbac/ -i /examples/rbac/input.json "data.rbac.authz"
+```
+
+Detaillierte Beschreibung: [examples/README.md](examples/README.md)
+
+---
 
 ## Architektur
 
@@ -43,6 +210,8 @@ npa fmt ./policies/
 │  ┌──────┐ ┌───────┐ ┌────────┐ ┌─────────────────┐  │
 │  │ Data │ │ Query │ │ Policy │ │ Health/Metrics   │  │
 │  └──────┘ └───────┘ └────────┘ └─────────────────┘  │
+├──────────────────────────────────────────────────────┤
+│             Web-Dashboard (HTML/JS)                   │
 ├──────────────────────────────────────────────────────┤
 │                 Plugin Manager                        │
 │  ┌────────┐ ┌──────┐ ┌────────┐ ┌───────────────┐   │
@@ -62,7 +231,8 @@ npa fmt ./policies/
 
 | Bereich | OPA | NPA |
 |---------|-----|-----|
-| HTTPS | Optional | **Default** |
+| HTTPS | Optional | **Default (Auto-TLS)** |
+| Container | Scratch (Go binary) | **Fedora 41 (~300 MB)** |
 | Storage | BadgerDB (instabil) | **SQLite** (bewährt) |
 | I/O | Synchron (Go) | **Async** (asyncio) |
 | Serialisierung | encoding/json | **orjson** (10x schneller) |
@@ -70,50 +240,70 @@ npa fmt ./policies/
 | Logging | logrus | **structlog** |
 | Config Validation | Manuell | **Pydantic** |
 | Rate Limiting | Keins | **Eingebaut** |
-| CORS | Manuell | **Middleware** |
+| Web UI | Basic Status | **Dashboard mit Live-Metriken** |
+
+---
 
 ## Projektstruktur
 
 ```
-npa/
-├── __init__.py               # Version
-├── ast/
-│   ├── types.py              # AST-Knotentypen (frozen dataclasses)
-│   ├── lexer.py              # Rego Tokenizer
-│   ├── parser.py             # Recursive-Descent Parser
-│   ├── compiler.py           # RuleTree/ModuleTree Compiler
-│   └── builtins.py           # 100+ Built-in-Funktionen
-├── eval/
-│   ├── topdown.py            # Top-Down Evaluator mit Backtracking
-│   ├── cache.py              # Intra-Query + Inter-Query Cache (LRU/TTL)
-│   └── unify.py              # Unification Engine
-├── server/
-│   ├── app.py                # FastAPI App Factory (HTTPS-first)
-│   ├── auth.py               # JWT/API-Key Auth Middleware
-│   └── routes/
-│       ├── data.py           # /v1/data/* (GET/POST/PUT/PATCH/DELETE)
-│       ├── policy.py         # /v1/policies/* (CRUD)
-│       ├── query.py          # /v1/query + /v1/compile
-│       └── health.py         # /health, /health/live, /health/ready
-├── storage/
-│   ├── base.py               # Abstract Storage + Transaction Interface
-│   ├── inmemory.py           # Thread-safe In-Memory Store
-│   └── disk.py               # SQLite-backed Persistent Store (WAL)
-├── bundle/
-│   ├── bundle.py             # Bundle Format (.tar.gz), Load/Build
-│   ├── sign.py               # JWT-basierte Bundle-Signierung
-│   └── loader.py             # Async HTTP/Disk Loader mit Polling
-├── plugins/
-│   └── manager.py            # Plugin Lifecycle + Bundle/Log/Status Plugins
-├── config/
-│   └── config.py             # Pydantic Settings (TLS, Server, Auth, ...)
-├── sdk/
-│   └── sdk.py                # Embeddable SDK (NPA Klasse)
-└── cli/
-    └── main.py               # Typer CLI (run/eval/build/check/parse/sign/inspect)
+NextPolicyAgent/
+├── Dockerfile                    # Multi-Stage Fedora 41 Build
+├── docker-compose.yml            # Docker Compose Konfiguration
+├── .dockerignore                 # Docker Build-Ausschlüsse
+├── pyproject.toml                # Python-Projektdefinition
+├── start-npa.ps1 / .sh          # Start-Skripte (Windows/Linux)
+├── stop-npa.ps1                  # Stop-Skript (Windows)
+├── examples/                     # 6 Policy-Beispiele (OPA-verifiziert)
+├── Documentation/                # Anleitungen
+│   └── Docker-Anleitung.md      # Vollständige Docker-Anleitung
+└── npa/                          # Quellcode
+    ├── __init__.py               # Version (0.1.0)
+    ├── ast/
+    │   ├── types.py              # AST-Knotentypen (frozen dataclasses)
+    │   ├── lexer.py              # Rego Tokenizer
+    │   ├── parser.py             # Recursive-Descent Parser (Rego v1)
+    │   ├── compiler.py           # RuleTree/ModuleTree Compiler
+    │   └── builtins.py           # 100+ Built-in-Funktionen
+    ├── eval/
+    │   ├── topdown.py            # Top-Down Evaluator mit Backtracking
+    │   ├── cache.py              # Intra-Query + Inter-Query Cache (LRU/TTL)
+    │   ├── partial.py            # Partial Evaluation
+    │   └── unify.py              # Unification Engine
+    ├── server/
+    │   ├── app.py                # FastAPI App Factory (HTTPS-first)
+    │   ├── auth.py               # JWT/API-Key Auth Middleware
+    │   ├── static/               # Web-Dashboard (HTML/CSS/JS)
+    │   └── routes/
+    │       ├── data.py           # /v1/data/* (GET/POST/PUT/PATCH/DELETE)
+    │       ├── policy.py         # /v1/policies/* (CRUD)
+    │       ├── query.py          # /v1/query + /v1/compile
+    │       └── health.py         # /health, /health/live, /health/ready
+    ├── storage/
+    │   ├── base.py               # Abstract Storage + Transaction Interface
+    │   ├── inmemory.py           # Thread-safe In-Memory Store
+    │   └── disk.py               # SQLite-backed Persistent Store (WAL)
+    ├── bundle/
+    │   ├── bundle.py             # Bundle Format (.tar.gz), Load/Build
+    │   ├── sign.py               # JWT-basierte Bundle-Signierung
+    │   └── loader.py             # Async HTTP/Disk Loader mit Polling
+    ├── plugins/
+    │   └── manager.py            # Plugin Lifecycle + Bundle/Log/Status Plugins
+    ├── format/
+    │   └── formatter.py          # Rego Code Formatter
+    ├── config/
+    │   └── config.py             # Pydantic Settings (TLS, Server, Auth, ...)
+    ├── sdk/
+    │   └── sdk.py                # Embeddable SDK (NPA Klasse)
+    └── cli/
+        └── main.py               # Typer CLI (run/eval/build/check/parse/sign/inspect)
 ```
 
+---
+
 ## SDK-Nutzung (Embedded)
+
+NPA kann als Library direkt in Python-Anwendungen eingebettet werden:
 
 ```python
 from npa.sdk.sdk import NPA
@@ -122,10 +312,30 @@ engine = NPA()
 engine.load_policy("authz.rego", """
     package authz
     default allow = false
-    allow { input.role == "admin" }
+    allow if { input.role == "admin" }
 """)
 
 result = engine.decide_bool("data.authz.allow", {"role": "admin"})
 # True
+
+result = engine.decide("data.authz", {"role": "admin"})
+# {"result": [{"allow": True, ...}]}
 ```
+
+---
+
+## Dokumentation
+
+| Dokument | Beschreibung |
+|----------|-------------|
+| [Docker-Anleitung](Documentation/Docker-Anleitung.md) | Container-Setup, Konfiguration, Produktion |
+| [Policy-Beispiele](examples/README.md) | 6 praxisnahe Rego-Policies mit Erklärung |
+| [OPA Gap-Analyse](Documentation/OPA_vs_NPA_Gap_Analysis.md) | Kompatibilitätsvergleich NPA vs. OPA |
+| [Anforderungsprofil](Documentation/OPA_Analyse_und_Anforderungsprofil.md) | Ursprüngliche Analyse und Designziele |
+
+---
+
+## Lizenz
+
+Apache License 2.0 — siehe [LICENSE](LICENSE) (falls vorhanden)
 
