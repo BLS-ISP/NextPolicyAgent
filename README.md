@@ -349,12 +349,30 @@ result = engine.decide("data.authz", {"role": "admin"})
 
 ## Dokumentation
 
+### Einstieg
+
+| Dokument | Beschreibung |
+|----------|-------------|
+| [Schnellstart](Documentation/Schnellstart.md) | In 10 Minuten von Installation bis erste Policy |
+| [CLI-Referenz](Documentation/CLI_Referenz.md) | Alle 13 Kommandozeilen-Befehle im Detail |
+| [REST-API-Referenz](Documentation/REST_API_Referenz.md) | Vollständige HTTP-Endpunkt-Dokumentation |
+| [Rego-Sprachreferenz](Documentation/Rego_Sprachreferenz.md) | Rego-Syntax und 192+ Built-in Funktionen |
+| [SDK-Referenz](Documentation/SDK_Referenz.md) | Python SDK zum Einbetten in eigene Apps |
+| [Konfigurationsreferenz](Documentation/Konfigurationsreferenz.md) | Alle Config-Optionen mit Umgebungsvariablen |
+
+### Beispiele & Betrieb
+
 | Dokument | Beschreibung |
 |----------|-------------|
 | [Docker-Anleitung](Documentation/Docker-Anleitung.md) | Container-Setup, Konfiguration, Produktion |
 | [Policy-Beispiele](examples/README.md) | 6 praxisnahe Rego-Policies mit Erklärung |
 | [Plugin-Beispiele](examples/plugins/README.md) | 5 Plugin-Beispiele mit Architektur-Übersicht |
 | [Performance-Vergleich](Documentation/Performance_Vergleich_OPA_vs_NPA.md) | Benchmark OPA vs. NPA (8 Tests) |
+
+### Hintergrund
+
+| Dokument | Beschreibung |
+|----------|-------------|
 | [OPA Gap-Analyse](Documentation/OPA_vs_NPA_Gap_Analysis.md) | Kompatibilitätsvergleich NPA vs. OPA |
 | [Anforderungsprofil](Documentation/OPA_Analyse_und_Anforderungsprofil.md) | Ursprüngliche Analyse und Designziele |
 
