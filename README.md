@@ -354,6 +354,7 @@ result = engine.decide("data.authz", {"role": "admin"})
 | Dokument | Beschreibung |
 |----------|-------------|
 | [Schnellstart](Documentation/Schnellstart.md) | In 10 Minuten von Installation bis erste Policy |
+| [Web-Dashboard](Documentation/Web_Dashboard.md) | Benutzerhandbuch für das integrierte Web-UI (7 Seiten) |
 | [CLI-Referenz](Documentation/CLI_Referenz.md) | Alle 13 Kommandozeilen-Befehle im Detail |
 | [REST-API-Referenz](Documentation/REST_API_Referenz.md) | Vollständige HTTP-Endpunkt-Dokumentation |
 | [Rego-Sprachreferenz](Documentation/Rego_Sprachreferenz.md) | Rego-Syntax und 192+ Built-in Funktionen |

@@ -343,6 +343,10 @@ npa bench "data.authz.allow" -d authz.rego -i input.json -n 1000
 
 NPA hat ein integriertes Web-Dashboard unter `https://localhost:8443/`.
 
+> **Ausfuehrliche Dokumentation:** Alle 7 Dashboard-Seiten mit Workflows,
+> Tastenkuerzeln und Fehlerbehebung sind im
+> [Web-Dashboard Benutzerhandbuch](Web_Dashboard.md) beschrieben.
+
 ### Login
 
 - **Benutzer:** `admin` (Standard)
