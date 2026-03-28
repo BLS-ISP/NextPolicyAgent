@@ -1,0 +1,47 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv
+venv
+env
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Tests & dev
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov/
+test_*.py
+_test_*.py
+
+# OS
+Thumbs.db
+.DS_Store
+
+# OPA reference (not needed in container)
+../OPA
+../certs
+
+# Docs (optional, keep README)
+Documentation/
+*.md
+!README.md
+!examples/README.md

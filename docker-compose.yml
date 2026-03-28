@@ -1,0 +1,47 @@
+# ──────────────────────────────────────────────────────────
+# NPA – Docker Compose
+# ──────────────────────────────────────────────────────────
+# Verwendung:
+#   docker compose up              # Starten
+#   docker compose up -d           # Im Hintergrund
+#   docker compose up --build      # Neu bauen + starten
+#   docker compose logs -f npa     # Logs verfolgen
+#   docker compose down            # Stoppen
+# ──────────────────────────────────────────────────────────
+
+services:
+  npa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: npa:latest
+    container_name: npa
+    ports:
+      - "8443:8443"
+    volumes:
+      # Policies und Daten einbinden (optional)
+      - ./policies:/policies:ro
+      - ./data:/data:ro
+      - ./bundles:/bundles:ro
+      # Eigene TLS-Zertifikate (optional – NPA generiert sonst selbstsignierte)
+      # - ./certs:/certs:ro
+    environment:
+      # Server
+      - NPA_SERVER_ADDR=0.0.0.0
+      - NPA_SERVER_PORT=8443
+      # Logging
+      - NPA_LOGGING_LEVEL=INFO
+      # Auth (optional)
+      # - NPA_AUTH_ENABLED=true
+      # - NPA_AUTH_UI_USERNAME=admin
+      # - NPA_AUTH_UI_PASSWORD=changeme
+      # TLS mit eigenen Zertifikaten (optional)
+      # - NPA_TLS_CERT_FILE=/certs/npa.crt
+      # - NPA_TLS_KEY_FILE=/certs/npa.key
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request, ssl; ctx=ssl.create_default_context(); ctx.check_hostname=False; ctx.verify_mode=ssl.CERT_NONE; urllib.request.urlopen('https://localhost:8443/health', context=ctx)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
