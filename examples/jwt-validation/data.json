@@ -1,0 +1,9 @@
+{
+  "jwt": {
+    "trusted_issuers": [
+      "https://auth.example.com",
+      "https://sso.corp.internal",
+      "https://login.microsoftonline.com/tenant-id/v2.0"
+    ]
+  }
+}

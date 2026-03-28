@@ -1,0 +1,34 @@
+{
+    "request": {
+        "kind": {"kind": "Pod", "group": "", "version": "v1"},
+        "operation": "CREATE",
+        "object": {
+            "metadata": {
+                "name": "my-app",
+                "namespace": "default",
+                "labels": {
+                    "app": "my-app",
+                    "team": "platform",
+                    "environment": "staging"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "web",
+                        "image": "ghcr.io/my-org/web-app:v1.2.3",
+                        "securityContext": {
+                            "runAsUser": 1000
+                        },
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

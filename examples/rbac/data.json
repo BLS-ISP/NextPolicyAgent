@@ -1,0 +1,27 @@
+{
+    "rbac": {
+        "bindings": [
+            {"user": "alice",   "role": "admin"},
+            {"user": "alice",   "role": "analyst"},
+            {"user": "bob",     "role": "analyst"},
+            {"user": "charlie", "role": "viewer"},
+            {"user": "dave",    "role": "viewer"}
+        ],
+        "grants": {
+            "admin": [
+                {"action": "read",   "resource": "reports"},
+                {"action": "write",  "resource": "reports"},
+                {"action": "delete", "resource": "reports"},
+                {"action": "read",   "resource": "users"},
+                {"action": "write",  "resource": "users"}
+            ],
+            "analyst": [
+                {"action": "read",  "resource": "reports"},
+                {"action": "write", "resource": "reports"}
+            ],
+            "viewer": [
+                {"action": "read", "resource": "reports"}
+            ]
+        }
+    }
+}

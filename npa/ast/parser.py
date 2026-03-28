@@ -302,7 +302,9 @@ class Parser:
     def _parse_default_rule(self) -> Rule:
         tok = self._advance()  # consume 'default'
         name_tok = self._expect(TokenType.IDENT)
-        self._expect(TokenType.UNIFY)
+        # Accept both = and := for default rules (Rego v1 uses :=)
+        if not self._match(TokenType.ASSIGN):
+            self._expect(TokenType.UNIFY)
         value = self._parse_term()
         return Rule(
             kind=RuleKind.DEFAULT,

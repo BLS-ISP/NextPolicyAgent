@@ -1,0 +1,6 @@
+{
+    "method": "DELETE",
+    "path": ["api", "v1", "users"],
+    "user": "alice",
+    "token": "eyJhbGciOiJIUzI1NiJ9.valid-token"
+}

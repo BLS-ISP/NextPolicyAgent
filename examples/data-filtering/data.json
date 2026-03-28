@@ -1,0 +1,11 @@
+{
+  "employees": [
+    {"name": "Alice",   "department": "engineering", "clearance": "top-secret",   "active": true},
+    {"name": "Bob",     "department": "engineering", "clearance": "secret",       "active": true},
+    {"name": "Charlie", "department": "sales",       "clearance": "public",       "active": true},
+    {"name": "Diana",   "department": "engineering", "clearance": "secret",       "active": false},
+    {"name": "Eve",     "department": "sales",       "clearance": "confidential", "active": true},
+    {"name": "Frank",   "department": "hr",          "clearance": "confidential", "active": true},
+    {"name": "Grace",   "department": "engineering", "clearance": "top-secret",   "active": true}
+  ]
+}

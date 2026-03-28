@@ -130,11 +130,11 @@ class NPA:
 
     def _rebuild(self) -> None:
         """Recompile all policies and rebuild the evaluator."""
-        modules = []
+        modules = {}
         for pid, raw in self._modules.items():
             try:
-                mod = parse_module(pid, raw)
-                modules.append(mod)
+                mod = parse_module(raw, pid)
+                modules[pid] = mod
             except Exception as e:
                 raise NPAError(f"Parse error in {pid}: {e}") from e
 

@@ -1,0 +1,6 @@
+{
+    "source_ip": "10.0.1.50",
+    "dest_ip": "10.0.2.100",
+    "dest_port": 443,
+    "protocol": "tcp"
+}

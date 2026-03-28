@@ -139,6 +139,10 @@ def _walk(data: Any, path: list[str]) -> Any:
 def _set_path(data: dict, path: list[str], value: Any) -> None:
     """Set a value at a nested path, creating intermediate dicts."""
     if not path:
+        # Replace entire document
+        data.clear()
+        if isinstance(value, dict):
+            data.update(value)
         return
     current = data
     for segment in path[:-1]:
