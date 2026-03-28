@@ -326,7 +326,7 @@ npa version
 **Beispielausgabe:**
 
 ```
-NPA - Next Policy Agent v0.1.0
+NPA - Next Policy Agent v1.0.0
 Python 3.12.0
 ```
 
@@ -450,7 +450,7 @@ npa capabilities
 
 ```json
 {
-  "npa_version": "0.1.0",
+  "npa_version": "1.0.0",
   "builtins": [
     {"name": "abs"},
     {"name": "all"},

@@ -608,7 +608,7 @@ if __name__ == "__main__":
     print("╔══════════════════════════════════════════════════════════╗")
     print("║         NPA vs OPA — Performance Benchmark Suite        ║")
     print("╠══════════════════════════════════════════════════════════╣")
-    print(f"║  NPA Version: 0.1.0 (Python/FastAPI)                    ║")
+    print(f"║  NPA Version: 1.0.0 (Python/FastAPI)                    ║")
     print(f"║  OPA Version: 1.3.0 (Go)                                ║")
     print(f"║  Platform:    {sys.platform} / Python {sys.version.split()[0]:<22}║")
     print("╚══════════════════════════════════════════════════════════╝")

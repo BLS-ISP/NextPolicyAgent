@@ -158,7 +158,7 @@ bundles:
 labels:
   environment: "production"
   region: "eu-west-1"
-  version: "v0.1.0"
+  version: "v1.0.0"
 """
 
 

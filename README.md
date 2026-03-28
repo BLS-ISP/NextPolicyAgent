@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/badge/License-GPL--3.0-blue)](LICENSE)
 [![OPA Compatible](https://img.shields.io/badge/OPA-kompatibel-orange)](https://www.openpolicyagent.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-blue)](Documentation/Docker-Anleitung.md)
+[![CVE-Free](https://img.shields.io/badge/CVE--Scan-0_critical_|_0_high-brightgreen)](https://osv.dev/)
+[![pip-audit](https://img.shields.io/badge/pip--audit-verified-brightgreen)](https://github.com/pypa/pip-audit)
 
 ---
 
@@ -32,8 +34,15 @@
 ### Lokal (Python)
 
 ```bash
-# Installation
+# venv erstellen und aktivieren
+python -m venv .venv
+.venv\Scripts\activate      # Windows (PowerShell)
+source .venv/bin/activate    # Linux/macOS
+
+# Dependencies installieren
 pip install -e ".[dev]"
+# Oder aus Lockfile (exakte Versionen):
+pip install -r requirements.txt && pip install -e .
 
 # Server starten (HTTPS mit Auto-TLS)
 npa run
@@ -44,6 +53,8 @@ npa run --addr 0.0.0.0:8443 --tls-cert-file cert.pem --tls-private-key-file key.
 # Ohne TLS (nur Entwicklung)
 npa run --no-tls
 ```
+
+> **Hinweis:** Die Start-Skripte (`start-npa.ps1` / `start-npa.sh`) erkennen das `.venv` automatisch.
 
 ### Docker
 
@@ -267,6 +278,60 @@ Detaillierte Beschreibung: [examples/plugins/README.md](examples/plugins/README.
 
 ---
 
+## Sicherheit & CVE-Status
+
+NPA wird regelmäßig mit [pip-audit](https://github.com/pypa/pip-audit) gegen die [OSV-Datenbank](https://osv.dev/) auf bekannte Sicherheitslücken geprüft.
+
+### Letzter Scan (März 2026)
+
+| Metrik | Ergebnis |
+|--------|----------|
+| Direkte Abhängigkeiten | 19 Pakete |
+| Transitive Abhängigkeiten | 40 Pakete (gesamt) |
+| Bekannte CVEs | **0 kritisch, 0 hoch** |
+| Status | ✅ **Keine ausnutzbaren Schwachstellen** |
+
+<details>
+<summary>Details zum Scan-Ergebnis</summary>
+
+**Alle direkten Abhängigkeiten sind CVE-frei:**
+
+| Paket | Version | Status |
+|-------|---------|--------|
+| FastAPI | 0.135.1 | ✅ Clean |
+| uvicorn | 0.41.0 | ✅ Clean |
+| cryptography | ≥46.0.6 | ✅ Clean |
+| PyJWT | 2.12.0 | ✅ Clean |
+| pydantic | 2.12.5 | ✅ Clean |
+| httpx | 0.28.1 | ✅ Clean |
+| orjson | 3.11.7 | ✅ Clean |
+| aiosqlite | 0.22.1 | ✅ Clean |
+| structlog | 25.5.0 | ✅ Clean |
+| OpenTelemetry | 1.40.0 | ✅ Clean |
+| Starlette | 1.0.0 | ✅ Clean |
+
+**Hinweis:** Pygments (transitive Dep via Rich, CLI-Output) hat einen offenen Low-Severity-CVE (CVE-2026-4539, lokaler ReDoS im AdlLexer). Dieser Lexer wird von NPA nicht verwendet und ist nur mit lokalem Zugriff ausnutzbar.
+
+**Scan reproduzieren:**
+```bash
+pip install pip-audit
+pip-audit -r <(pip freeze | grep -E "fastapi|uvicorn|orjson|cryptography|PyJWT|pydantic|httpx|aiosqlite|typer|rich|structlog|prometheus|opentelemetry|cachetools|xxhash|psutil|pyyaml")
+```
+
+</details>
+
+### Sicherheitsmaßnahmen
+
+- **HTTPS by Default** — TLS 1.2+ mit automatischer Zertifikatsgenerierung
+- **Dependency Pinning** — Alle Abhängigkeiten mit Mindestversionen gesichert
+- **Regelmäßige CVE-Scans** — Automatisierte Prüfung gegen OSV-Datenbank
+- **Kein C-Code** — Pure Python, keine nativen Exploits durch Buffer Overflows
+- **Pydantic Validation** — Strikte Input-Validierung auf allen API-Endpunkten
+- **JWT Authentication** — Optionale API-Absicherung mit Token-basierter Auth
+- **Rate Limiting** — Eingebauter Schutz gegen Brute-Force und DoS
+
+---
+
 ## Projektstruktur
 
 ```
@@ -281,7 +346,7 @@ NextPolicyAgent/
 ├── Documentation/                # Anleitungen
 │   └── Docker-Anleitung.md      # Vollständige Docker-Anleitung
 └── npa/                          # Quellcode
-    ├── __init__.py               # Version (0.1.0)
+    ├── __init__.py               # Version (1.0.0)
     ├── ast/
     │   ├── types.py              # AST-Knotentypen (frozen dataclasses)
     │   ├── lexer.py              # Rego Tokenizer

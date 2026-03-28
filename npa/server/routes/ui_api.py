@@ -155,7 +155,7 @@ async def ui_status(request: Request) -> dict:
 
     return {
         "server": {
-            "version": "0.1.0",
+            "version": "1.0.0",
             "uptime_seconds": round(time.time() - start_time, 1),
             "healthy": True,
             "tls_enabled": config.tls.enabled,

@@ -1,6 +1,6 @@
 # Performance-Vergleich: NPA vs OPA
 
-> **NPA 0.1.0** (Python 3.13 / FastAPI) vs **OPA 1.3.0** (Go 1.24)  
+> **NPA 1.0.0** (Python 3.13 / FastAPI) vs **OPA 1.3.0** (Go 1.24)  
 > Plattform: Windows 11, AMD/Intel Desktop-System  
 > Datum: März 2026
 

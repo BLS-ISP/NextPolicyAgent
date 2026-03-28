@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "npa"
-version = "0.1.0"
+version = "1.0.0"
 description = "Next Policy Agent — A high-performance, secure policy engine (Python/FastAPI rewrite of OPA)"
 readme = "README.md"
 license = {text = "GPL-3.0-only"}
@@ -14,7 +14,7 @@ authors = [
 ]
 keywords = ["policy", "authorization", "rego", "opa", "security"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Framework :: FastAPI",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
@@ -25,16 +25,16 @@ classifiers = [
 
 dependencies = [
     # Web Framework
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.34.0",
+    "fastapi>=0.135.2",
+    "uvicorn[standard]>=0.42.0",
 
     # Performance
     "orjson>=3.10.0",
     "uvloop>=0.21.0; sys_platform != 'win32'",
 
     # Security / Crypto
-    "cryptography>=44.0.0",
-    "PyJWT>=2.9.0",
+    "cryptography>=46.0.6",
+    "PyJWT>=2.12.1",
 
     # Configuration
     "pydantic>=2.10.0",
@@ -68,7 +68,7 @@ dev = [
     "pytest>=8.3.0",
     "pytest-asyncio>=0.24.0",
     "pytest-cov>=6.0.0",
-    "ruff>=0.8.0",
+    "ruff>=0.15.8",
     "mypy>=1.13.0",
     "httpx>=0.28.0",
 ]

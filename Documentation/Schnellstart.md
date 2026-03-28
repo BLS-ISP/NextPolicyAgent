@@ -35,14 +35,23 @@ Policy-Evaluation -- lokal, per Docker oder als eingebettete Library.
 ```bash
 git clone https://github.com/BLS-ISP/NextPolicyAgent.git
 cd NextPolicyAgent
+
+# venv erstellen und aktivieren
+python -m venv .venv
+.venv\Scripts\activate      # Windows (PowerShell)
+source .venv/bin/activate    # Linux/macOS
+
+# Dependencies installieren
 pip install -e ".[dev]"
+# Oder aus Lockfile (exakte Versionen):
+pip install -r requirements.txt && pip install -e .
 ```
 
 ### Pruefen, ob NPA installiert ist
 
 ```bash
 npa version
-# NPA v0.1.0 (Python 3.13.x)
+# NPA v1.0.0 (Python 3.13.x)
 ```
 
 ---

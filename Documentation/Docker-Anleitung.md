@@ -70,7 +70,7 @@ docker build -t npa:latest .
 ### Mit Custom-Tag
 
 ```bash
-docker build -t npa:0.1.0 .
+docker build -t npa:1.0.0 .
 docker build -t meine-registry.example.com/npa:latest .
 ```
 
@@ -478,10 +478,10 @@ docker run -d \
 
 ```bash
 # Taggen
-docker tag npa:latest meine-registry.example.com/npa:0.1.0
+docker tag npa:latest meine-registry.example.com/npa:1.0.0
 
 # Pushen
-docker push meine-registry.example.com/npa:0.1.0
+docker push meine-registry.example.com/npa:1.0.0
 ```
 
 ---

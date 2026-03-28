@@ -15,7 +15,7 @@ async def get_config(request: Request) -> dict:
     cfg = request.app.state.config
     return {
         "result": {
-            "labels": {"id": "npa", "version": "0.1.0"},
+            "labels": {"id": "npa", "version": "1.0.0"},
             "default_decision": cfg.default_decision if hasattr(cfg, "default_decision") else "/system/main",
             "default_authorization_decision": "/system/authz/allow",
             "storage": {"backend": cfg.storage.backend},

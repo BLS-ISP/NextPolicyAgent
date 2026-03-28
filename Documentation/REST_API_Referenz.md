@@ -706,7 +706,7 @@ curl -sk https://localhost:8443/v1/ui/status -b cookies.txt
 
 ```json
 {
-  "server": {"uptime": "1h 30m", "version": "0.1.0"},
+  "server": {"uptime": "1h 30m", "version": "1.0.0"},
   "policies": {"count": 3, "ids": ["authz", "rbac", "network"]},
   "data": {"keys": ["users", "roles"]},
   "evaluator": {"total_evaluations": 150, "avg_duration_ms": 1.2},

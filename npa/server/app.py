@@ -41,7 +41,7 @@ def create_app(config: NpaConfig | None = None) -> FastAPI:
     app = FastAPI(
         title="NPA – Next Policy Agent",
         description="OPA-compatible policy engine with HTTPS-first design",
-        version="0.1.0",
+        version="1.0.0",
         docs_url="/v1/docs",
         redoc_url="/v1/redoc",
     )
@@ -69,7 +69,7 @@ def create_app(config: NpaConfig | None = None) -> FastAPI:
     )
     plugin_manager = PluginManager()
     plugin_manager.store = storage
-    plugin_manager.info = {"labels": config.labels, "version": "0.1.0"}
+    plugin_manager.info = {"labels": config.labels, "version": "1.0.0"}
 
     # Register built-in plugins (configured via config or env)
     bundle_cfg: dict[str, Any] = {}
