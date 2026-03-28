@@ -1,0 +1,120 @@
+{
+  "startup": {
+    "npa_avg_ms": 127.59287997614594,
+    "opa_avg_ms": 57.058800011873245,
+    "ratio": 2.2361647975350936
+  },
+  "cli_rbac": {
+    "npa_avg_ms": 138.21969996206462,
+    "opa_avg_ms": 61.72202001325786,
+    "ratio": 2.2393904141888923
+  },
+  "cli_http-api-authz": {
+    "npa_avg_ms": 159.1915400000289,
+    "opa_avg_ms": 63.53513998910784,
+    "ratio": 2.505566841079125
+  },
+  "cli_network-firewall": {
+    "npa_avg_ms": 146.14550000987947,
+    "opa_avg_ms": 64.69339998438954,
+    "ratio": 2.259048064333367
+  },
+  "cli_data-filtering": {
+    "npa_avg_ms": 143.61733999103308,
+    "opa_avg_ms": 56.051719980314374,
+    "ratio": 2.5622289564258183
+  },
+  "sdk_rbac": {
+    "avg_us": 4.85240004491061,
+    "ops_per_sec": 206083.58559571768,
+    "iterations": 1000
+  },
+  "sdk_http-api-authz": {
+    "avg_us": 5.6715999962762,
+    "ops_per_sec": 176317.0887679966,
+    "iterations": 1000
+  },
+  "sdk_network-firewall": {
+    "avg_us": 5.105999996885657,
+    "ops_per_sec": 195848.0220544336,
+    "iterations": 1000
+  },
+  "sdk_data-filtering": {
+    "avg_us": 4.3385999742895365,
+    "ops_per_sec": 230489.09923154511,
+    "iterations": 1000
+  },
+  "complexity_1": {
+    "avg_us": 8.67619994096458,
+    "num_rules": 1
+  },
+  "complexity_5": {
+    "avg_us": 9.455000050365925,
+    "num_rules": 5
+  },
+  "complexity_10": {
+    "avg_us": 10.510599939152598,
+    "num_rules": 10
+  },
+  "complexity_25": {
+    "avg_us": 13.693799963220954,
+    "num_rules": 25
+  },
+  "complexity_50": {
+    "avg_us": 18.702799919992685,
+    "num_rules": 50
+  },
+  "complexity_100": {
+    "avg_us": 30.625199899077412,
+    "num_rules": 100
+  },
+  "datasize_10": {
+    "avg_us": 50.662499852478504,
+    "data_records": 10
+  },
+  "datasize_100": {
+    "avg_us": 391.26450021285564,
+    "data_records": 100
+  },
+  "datasize_1000": {
+    "avg_us": 3794.1210001008585,
+    "data_records": 1000
+  },
+  "datasize_5000": {
+    "avg_us": 18682.26099992171,
+    "data_records": 5000
+  },
+  "datasize_10000": {
+    "avg_us": 36821.2890002178,
+    "data_records": 10000
+  },
+  "builtin_string_ops": {
+    "avg_us": 11.418400099501014
+  },
+  "builtin_json_ops": {
+    "avg_us": 10.946599999442697
+  },
+  "builtin_regex_ops": {
+    "avg_us": 9.78900003246963
+  },
+  "builtin_crypto_hash": {
+    "avg_us": 7.2200000286102295
+  },
+  "builtin_array_comprehension": {
+    "avg_us": 384.7747999243438
+  },
+  "builtin_set_operations": {
+    "avg_us": 15.999000053852797
+  },
+  "memory": {
+    "current_mb": 0.26807689666748047,
+    "peak_mb": 0.4571800231933594
+  },
+  "api_throughput": {
+    "npa_avg_ms": 0.983710500295274,
+    "npa_rps": 1016.5592414636589,
+    "opa_avg_ms": 0.36947599961422384,
+    "opa_rps": 2706.5357453369556,
+    "ratio": 2.6624476321124586
+  }
+}
