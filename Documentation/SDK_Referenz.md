@@ -21,7 +21,7 @@ ohne den Server starten zu muessen.
 ## Installation
 
 ```bash
-pip install npa
+pip install nextpolicyagent
 ```
 
 ## Schnellstart

@@ -3,24 +3,29 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "npa"
+name = "nextpolicyagent"
 version = "1.0.0"
 description = "Next Policy Agent — A high-performance, secure policy engine (Python/FastAPI rewrite of OPA)"
 readme = "README.md"
 license = {text = "GPL-3.0-only"}
 requires-python = ">=3.12"
 authors = [
-    {name = "NPA Team"},
+    {name = "BLS-ISP"},
 ]
-keywords = ["policy", "authorization", "rego", "opa", "security"]
+keywords = ["policy", "authorization", "rego", "opa", "security", "policy-engine", "fastapi"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: FastAPI",
     "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Security",
     "Topic :: Software Development :: Libraries",
+    "Topic :: System :: Systems Administration",
+    "Typing :: Typed",
 ]
 
 dependencies = [
@@ -72,6 +77,13 @@ dev = [
     "mypy>=1.13.0",
     "httpx>=0.28.0",
 ]
+
+[project.urls]
+Homepage = "https://www.bls-isp.net/"
+Repository = "https://github.com/BLS-ISP/NextPolicyAgent"
+Documentation = "https://github.com/BLS-ISP/NextPolicyAgent/tree/main/Documentation"
+"Bug Tracker" = "https://github.com/BLS-ISP/NextPolicyAgent/issues"
+Changelog = "https://github.com/BLS-ISP/NextPolicyAgent/blob/main/CHANGELOG.md"
 
 [project.scripts]
 npa = "npa.cli.main:app"

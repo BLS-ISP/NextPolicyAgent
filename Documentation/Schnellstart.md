@@ -30,7 +30,13 @@ Policy-Evaluation -- lokal, per Docker oder als eingebettete Library.
 - Python >= 3.12
 - pip (oder uv, poetry)
 
-### Installation aus dem Repository
+### Installation via PyPI (empfohlen)
+
+```bash
+pip install nextpolicyagent
+```
+
+### Installation aus dem Repository (Entwicklung)
 
 ```bash
 git clone https://github.com/BLS-ISP/NextPolicyAgent.git
@@ -43,8 +49,6 @@ source .venv/bin/activate    # Linux/macOS
 
 # Dependencies installieren
 pip install -e ".[dev]"
-# Oder aus Lockfile (exakte Versionen):
-pip install -r requirements.txt && pip install -e .
 ```
 
 ### Pruefen, ob NPA installiert ist

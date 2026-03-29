@@ -236,7 +236,7 @@ NPA ist **nativ Python** — das bedeutet:
 - **Python-native Einbettung**: 100-1000× schneller als HTTP-basierte Ansätze
 - **Speicherverbrauch**: 40-60× weniger als OPA
 - **Python-Ökosystem**: Native Integration ohne Fremdsysteme
-- **Deployment-Einfachheit**: `pip install npa` statt Go-Binary-Management
+- **Deployment-Einfachheit**: `pip install nextpolicyagent` statt Go-Binary-Management
 - **Prototyping**: Policies in Sekunden testen, nicht Minuten
 
 ---

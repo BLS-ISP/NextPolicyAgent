@@ -2,6 +2,7 @@
 
 **High-performance, secure policy engine — Python/FastAPI rewrite of Open Policy Agent (OPA)**
 
+[![PyPI](https://img.shields.io/pypi/v/nextpolicyagent)](https://pypi.org/project/nextpolicyagent/)
 [![Python](https://img.shields.io/badge/Python-≥3.12-blue)](https://python.org)
 [![License](https://img.shields.io/badge/License-GPL--3.0-blue)](LICENSE)
 [![OPA Compatible](https://img.shields.io/badge/OPA-kompatibel-orange)](https://www.openpolicyagent.org/)
@@ -31,9 +32,21 @@
 
 ## Schnellstart
 
-### Lokal (Python)
+### Installation via PyPI
 
 ```bash
+pip install nextpolicyagent
+
+# Server starten
+npa run
+```
+
+### Installation aus dem Repository (Entwicklung)
+
+```bash
+git clone https://github.com/BLS-ISP/NextPolicyAgent.git
+cd NextPolicyAgent
+
 # venv erstellen und aktivieren
 python -m venv .venv
 .venv\Scripts\activate      # Windows (PowerShell)
@@ -41,8 +54,6 @@ source .venv/bin/activate    # Linux/macOS
 
 # Dependencies installieren
 pip install -e ".[dev]"
-# Oder aus Lockfile (exakte Versionen):
-pip install -r requirements.txt && pip install -e .
 
 # Server starten (HTTPS mit Auto-TLS)
 npa run
